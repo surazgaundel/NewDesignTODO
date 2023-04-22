@@ -43,13 +43,20 @@ app.delete('/todo/delete/:id',async (req,res)=>{
 })
 
 //update the  isComplete state of todo elements
-app.put('/todo/update/:id',async (req,res)=>{
+app.get('/todo/complete/:id',async (req,res)=>{
     const updatedTodo=await TODOSchema.findById(req.params.id);
-    updatedTodo.isComplete=!updatedTodo.isComplete;
+    updatedTodo.complete=!updatedTodo.complete;
     updatedTodo.save();
 
     res.json(updatedTodo);
 })
+app.put('/todo/update/:id', async (req, res) => {
+	const todo = await Todo.findById(req.params.id);
+	todo.text = req.body.text;
+	todo.save();
+
+	res.json(todo);
+});
 
 const PORT = process.env.PORT||3000;
 app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`))
